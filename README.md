@@ -3,7 +3,8 @@
 
 This is a Progressive Web Application (PWA) built using Astro.js for the frontend and Strapi for the backend. The project allows users to view products, sign up, sign in, add products to their cart, and remove them from the cart.
 
-https://github.com/user-attachments/assets/2038ab7b-a4b1-462b-8997-5b6527960673
+
+https://github.com/user-attachments/assets/b3271b41-c0fe-490c-9767-2d9c7855bf27
 
 ## Project Structure
 
@@ -13,11 +14,18 @@ PWA-astro-strapi/
 ├── backend/
 │   ├── ... (your backend files)
 
+
+
+
 ## Getting Started
 
 ### Backend
 
-https://github.com/user-attachments/assets/61d8fdd7-9155-4c7b-bc20-4cce5b826126
+
+
+https://github.com/user-attachments/assets/de55d06b-8196-404a-9eb7-21adf0e3be46
+
+
 
 
 
