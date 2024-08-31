@@ -2,6 +2,7 @@ const staticCacheName = "site-static-v1";
 const dynamicCacheName = "site-dynamic-v1";
 const assets = [
   "/",
+  "/cart",
   "/app.js",
   "/fallback",
   "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700",

@@ -27,7 +27,7 @@ let products = await fetchProductData();
 						price={product.attributes.price}
 						imageUrl={
 							product.attributes.photos.data[0]?.attributes
-								.formats.small.url
+								.formats.small?.url
 						}
 					/>
 				))
