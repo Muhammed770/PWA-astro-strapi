@@ -1,0 +1,51 @@
+---
+import { fetchProductData } from "./api/products";
+import ProductCard from "../components/ProductCard.astro";
+import Layout from "../layouts/Layout.astro";
+
+let products = await fetchProductData();
+---
+
+<Layout title="Products List">
+	<main class="product-page">
+		<h1
+			class="text-xl font-bold tracking-tight text-gray-900 sm:text-md md:text-xl py-2"
+		>
+			Shop your
+			<span
+				class="text-transparent bg-clip-text bg-gradient-to-tr to-orange-600 from-red-600"
+			>
+				favorite products
+			</span>
+		</h1>
+		<section class="product-list">
+			{
+				products.data.map((product: any) => (
+					<ProductCard
+						id={product.id}
+						title={product.attributes.title}
+						price={product.attributes.price}
+						imageUrl={
+							product.attributes.photos.data[0]?.attributes
+								.formats.small.url
+						}
+					/>
+				))
+			}
+		</section>
+	</main>
+</Layout>
+
+<style>
+	.product-page {
+		padding: 20px;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.product-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 20px;
+	}
+</style>

@@ -1,0 +1,32 @@
+---
+// Components
+import Layout from "../../layouts/Layout.astro";
+import AuthForm from "../../components/auth/AuthForm.astro";
+---
+
+<Layout title="sign-in page">
+  <AuthForm isSigninPage={true} />
+</Layout>
+
+<script>
+  import { authUser } from "../../helpers/user";
+  // Wait until the DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get form
+    const form = document.querySelector(".form") as HTMLFormElement;
+    // Ensure form exists before adding the event listener
+    if (form) {
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        // Get data from the form
+        const payload = new FormData(form);
+        console.log(payload);
+
+        // Try to sign up
+        authUser(payload, "sign_in");
+      });
+    } else {
+      console.error("Form not found!");
+    }
+  });
+</script>

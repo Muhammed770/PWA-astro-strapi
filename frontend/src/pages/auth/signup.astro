@@ -1,0 +1,28 @@
+---
+// Components
+import Layout from "../../layouts/Layout.astro";
+import AuthForm from "../../components/auth/AuthForm.astro";
+---
+
+<Layout title="signup page">
+  <AuthForm />
+</Layout>
+
+<script>
+    //////////////////////////////////////////
+    // HELPER: Auth
+    import {authUser} from "../../helpers/user"
+
+    //////////////////////////////////////////
+    // Sign up
+    // Get form
+    const form = document.querySelector(".form") as HTMLFormElement;
+    // Add event listener
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        // Get data from the form
+        const payload = new FormData(form);
+        // Try to sign up
+        authUser(payload, "sign_up")
+    })
+</script>

@@ -1,0 +1,76 @@
+---
+import InputTextGroup from "../InputTextGroup.astro";
+import InputPasswordGroup from "../InputPasswordGroup.astro";
+
+export interface Props {
+  isSigninPage?: boolean;
+}
+const { isSigninPage = false } = Astro.props as Props;
+---
+
+<div class="flex flex-col items-center justify-center p-10 pb-20">
+  <!--begin::Greeting-->
+  <h1 class="font-bold text-4xl text-primary mb-7">
+    {`${isSigninPage ? "Welcome back!" : "Welcome!"}`}
+  </h1>
+  <!--end::Greeting-->
+  <!--begin::Wrapper-->
+  <div class="w-full max-w-md bg-white rounded-lg shadow p-10 lg:p-15 mx-auto">
+    <!--begin::Form-->
+    <form class="form space-y-6" novalidate="novalidate" id="form">
+      <!--begin::Heading-->
+      <div class="text-center mb-10">
+        <!--begin::Title-->
+        <h1 class="text-gray-700 text-2xl mb-3">
+          {`${isSigninPage ? "Sign In to Your Account" : "Create an Account"}`}
+        </h1>
+        <!--end::Title-->
+        <!--begin::Link-->
+        <div class="text-gray-400 font-semibold text-lg">
+          {`${isSigninPage ? "New Here?" : "Already have an account?"}`}
+          <a
+            href={`${isSigninPage ? "/auth/signup" : "/auth/signin"}`}
+            class="text-primary font-bold hover:underline"
+          >
+            {`${isSigninPage ? "Create an Account" : "Sign in Here"}`}
+          </a>
+        </div>
+        <!--end::Link-->
+      </div>
+      <!--end::Heading-->
+      <!--begin::Username input group-->
+      {
+        !isSigninPage && (
+          <InputTextGroup title="Username" name="username" required={true} />
+        )
+      }
+      <!--end::Username input group-->
+      <!--begin::Email input group-->
+      {
+        isSigninPage ? (
+          <InputTextGroup title="Email" name="identifier" required={true} />
+        ) : (
+          <InputTextGroup title="Email" name="email" required={true} />
+        )
+      }
+      <!--end::Email input group-->
+      <!--begin::Password input group-->
+      <InputPasswordGroup />
+      <!--end::Password input group-->
+      <!--begin::Actions-->
+      <div class="text-center">
+        <button
+          type="submit"
+          id="kt_sign_up_submit"
+          class="bg-gray-950 text-white w-full py-2.5 px-5 rounded-md font-medium hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light mb-5"
+        >
+          <span class="inline-block">Submit</span>
+          
+        </button>
+      </div>
+      <!--end::Actions-->
+    </form>
+    <!--end::Form-->
+  </div>
+  <!--end::Wrapper-->
+</div>
