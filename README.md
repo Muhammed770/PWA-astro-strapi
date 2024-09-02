@@ -8,10 +8,10 @@ https://github.com/user-attachments/assets/b3271b41-c0fe-490c-9767-2d9c7855bf27
 
 ## Project Structure
 
-PWA-astro-strapi/
-├── frontend/
-│   ├── ... (your frontend files)
-├── backend/
+PWA-astro-strapi/<br>
+├── frontend/<br>
+│   ├── ... (your frontend files)<br>
+├── backend/<br>
 │   ├── ... (your backend files)
 
 
