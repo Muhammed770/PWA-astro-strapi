@@ -2,6 +2,7 @@
     "short_name": "InstaShopee",
     "name": "Insta Shopee",
     "src": "service-worker.js",
+    
     "icons": [
         {
             "src": "windows11/SmallTile.scale-100.png",
@@ -452,10 +453,28 @@
             "sizes": "1024x1024"
         }
     ],
+    "screenshots": [
+        {
+            "src": "screenshot-wide.png",
+            "sizes": "3024x1810",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "screenshot-narrow.png",
+            "sizes": "748x1620",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
     "start_url": "/",
     "id": "/",
     "background_color": "#3367D6",
     "display": "standalone",
+    "display_override": [
+        "fullscreen",
+        "minimal-ui"
+    ],
     "theme_color": "#ffe9e7",
     "description": "Best place to buy and sell products!",
     "orientation": "portrait-primary",
