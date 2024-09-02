@@ -5,6 +5,7 @@ const assets = [
   "/cart",
   "/app.js",
   "/fallback",
+  "/manifest.json",
   "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700",
 ];
 
