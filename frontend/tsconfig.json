@@ -5,8 +5,10 @@
     "lib": [
       "ES2020",
       "DOM"
-    ], // Include both ES2020 and DOM libraries
+    ],
     "moduleResolution": "Node",
-    "strict": true
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }
