@@ -2,9 +2,29 @@
 import Toast from "../components/Toast.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
+import { PUBLIC_SERVER_URL } from "astro:env/client";
 interface Props {
 	title: string;
 }
+import { io } from "socket.io-client";
+
+const socket = io(String(PUBLIC_SERVER_URL)); 
+
+socket.on("connect", () => {
+	console.log("Connected to WebSocket");
+
+	socket.on("product:create", (data) => {
+		console.log("Product created:", data);
+	});
+
+	socket.on("product:update", (data) => {
+		console.log("Product updated:", data);
+	});
+
+	socket.on("product:delete", (data) => {
+		console.log("Product deleted:", data);
+	});
+});
 
 const { title } = Astro.props || "GRAND HOME INTERIOR CLOTHING";
 ---

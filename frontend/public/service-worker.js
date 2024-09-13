@@ -1,7 +1,6 @@
 const staticCacheName = "site-static-v1";
 const dynamicCacheName = "site-dynamic-v1";
 const assets = [
-  "/",
   "/app.js",
   "/fallback",
   "/manifest.json",
@@ -46,27 +45,23 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method === "GET") {
     event.respondWith(
       caches.match(event.request).then((cacheRes) => {
-        return (
-          cacheRes ||
-          fetch(event.request).then((fetchRes) => {
-            return caches.open(dynamicCacheName).then((dynamicCache) => {
-              return dynamicCache.match(event.request).then((dynamicCacheRes) => {
-                if (
-                  !dynamicCacheRes || // If not cached
-                  dynamicCacheRes.headers.get("ETag") !== fetchRes.headers.get("ETag") // If cache is outdated
-                ) {
-                  dynamicCache.put(event.request.url, fetchRes.clone());
-                  limitCacheSize(dynamicCacheName, 15);
-                }
-                return fetchRes;
-              });
-            });
-          })
-        );
-      }).catch(async () => {
-        // Fallback to cache on failure
-        const fallbackResponse = await caches.match("/fallback");
-        return fallbackResponse || new Response("Network error occurred.");
+        // Make the network request to check if there's new data
+        return fetch(event.request).then((fetchRes) => {
+          return caches.open(dynamicCacheName).then((dynamicCache) => {
+            // Check if the ETag values differ (if cached response exists)
+            if (
+              !cacheRes || // If not cached
+              cacheRes.headers.get("ETag") !== fetchRes.headers.get("ETag") // If cache is outdated
+            ) {
+              // If the data is new, update the cache
+              dynamicCache.put(event.request.url, fetchRes.clone());
+            }
+            return fetchRes; // Always return the fresh response
+          });
+        }).catch(() => {
+          // Fallback to the cached response if the network request fails
+          return cacheRes || new Response("Network error occurred.");
+        });
       })
     );
   }

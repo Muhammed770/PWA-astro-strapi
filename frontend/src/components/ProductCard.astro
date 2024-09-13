@@ -1,5 +1,5 @@
 ---
-import { PUBLIC_SERVER_URL } from "astro:env/client";
+
 
 // src/components/ProductCard.astro
 export interface ProductCardProps {
@@ -22,7 +22,7 @@ const isAuthenticated = Astro.cookies.get("jwt_token")?.value;
     <div class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" >
         <img
             class="object-cover object-center w-full h-full"
-            src={`${PUBLIC_SERVER_URL}${imageUrl}`}
+            src={`${imageUrl}`}
             alt={title}
             onerror="this.onerror=null;this.src='/Default_product_img.png';"
         />
@@ -114,7 +114,7 @@ const isAuthenticated = Astro.cookies.get("jwt_token")?.value;
             ).then(() => {
             // refresh the window to update the cart count
             window.location.reload();
-            }).catch((err) => console.error('Add to cart failed:', err));"
+            }).catch((err) => console.error('Remove from cart failed:', err));"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
