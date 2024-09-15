@@ -27,6 +27,16 @@ export const GET: APIRoute = async ({ request }) => {
             const { data } = product;
             const { id, attributes } = data;
             const { title, price, pid, createdAt, updatedAt, photos } = attributes;
+            // Extract the formats
+            const formats = photos.data[0].attributes.formats;
+
+            // Check if medium exists, otherwise fallback to small or thumbnail
+            const photoUrl = formats.medium
+                ? formats.medium.url
+                : formats.small
+                    ? formats.small.url
+                    : formats.thumbnail.url;
+
             return {
                 id,
                 title,
@@ -34,7 +44,7 @@ export const GET: APIRoute = async ({ request }) => {
                 pid,
                 createdAt,
                 updatedAt,
-                photos: photos.data[0].attributes.formats.medium.url
+                photos: photoUrl
             };
         });
 

@@ -1,5 +1,15 @@
 ---
-const isAuthenticated = Astro.cookies.get("jwt_token");
+import { PUBLIC_CLIENT_URL } from "astro:env/client";
+const jwtToken = Astro.cookies.get("jwt_token")?.value;
+const response = await fetch(`${PUBLIC_CLIENT_URL}/api/verify-user`, {
+	method: "GET",
+	headers: {
+		Authorization: `Bearer ${jwtToken}`,
+	},
+});
+const data = await response.json();
+const isAuthenticated = data.isVerified;
+console.log("isAuthenticated", isAuthenticated);
 
 ---
 

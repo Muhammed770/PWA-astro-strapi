@@ -3,6 +3,8 @@ import type { APIRoute } from "astro";
 import { parseCookies } from "../../helpers/lib"
 // Function to get the user ID from the JWT
 const getUserIdFromJwt = async (jwtToken: string) => {
+ 
+    
     try {
         const response = await fetch(`${PUBLIC_SERVER_URL}/api/users/me`, {
             headers: {
@@ -10,7 +12,8 @@ const getUserIdFromJwt = async (jwtToken: string) => {
                 'Content-Type': 'application/json',
             },
         });
-
+        console.log("response",response);
+        
         if (!response.ok) {
             throw new Error('Failed to fetch user details');
         }
@@ -29,7 +32,7 @@ export const PUT: APIRoute = async ({ request }) => {
 
     const cookieMap = parseCookies(cookies);
     const jwtToken = cookieMap.jwt_token;
-    console.log("jwtToken",jwtToken);
+
     if (!jwtToken) {
         console.log("Authorization header missing", jwtToken);
         
@@ -42,7 +45,9 @@ export const PUT: APIRoute = async ({ request }) => {
 
         const userId = await getUserIdFromJwt(jwtToken); // Get the user ID from the JWT
         const { productId } = await request.json(); // Extract userId and productId from the request body
-
+        console.log("userId",userId);
+        console.log("productId",productId   );
+        
         if (!userId || !productId) {
             return new Response("User ID and Product ID are required", {
                 status: 400,

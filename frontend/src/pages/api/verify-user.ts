@@ -4,10 +4,8 @@ import { parseCookies } from "../../helpers/lib";
 
 export const GET: APIRoute = async ({ request }) => {
     // Extract JWT token from httpOnly cookie
-    const cookies = request.headers.get('cookie');    
-    const cookieMap = parseCookies(cookies);
-    const jwtToken = cookieMap.jwt_token;
-    
+    const jwtToken = request.headers.get('authorization')?.split('Bearer ')[1];
+
     try {
         const response = await fetch(`${PUBLIC_SERVER_URL}/api/users/me?populate=cart`, {
             headers: {
@@ -16,13 +14,13 @@ export const GET: APIRoute = async ({ request }) => {
             },
         });
         const data = await response.json();
-        
+        const isVerified = !!data?.id; 
         return Response.json({
             success: true,
-            cart: data.cart,
+            isVerified: isVerified,
         })
     } catch (error) {
-        return new Response(JSON.stringify({ error: 'Failed to fetch cart' }), {        
+        return new Response(JSON.stringify({ error: 'Failed to fetch cart' }), {
             status: 500,
         });
     }

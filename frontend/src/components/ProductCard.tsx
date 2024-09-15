@@ -12,6 +12,8 @@ const ProductCard: React.FC<ExtendedProductCardProps> = ({ id, title, price, pho
 
     
     const handleAddToCart = (productId: number) => {
+        console.log("handleAddToCart",productId);
+        
         fetch('/api/addcart', {
             method: 'PUT',
             body: JSON.stringify({ productId }),

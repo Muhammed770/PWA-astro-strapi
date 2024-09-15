@@ -3,13 +3,16 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { ProductCardProps } from '../helpers/types';
 import ProductCard from './ProductCard';
-import { fetchProductData } from "../pages/api/products";
 //serverUrl props from Astro
 const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isAuthenticated: string | undefined }) => {
-    const [products, setProducts] = useState<ProductCardProps[]>([]);
+
     console.log('PUBLIC_SERVER_URL:', serverUrl);
 
+
+    const [products, setProducts] = useState<ProductCardProps[]>([]);
     const [cartItems, setCartItems] = useState<{ cart: { id: number }[] }>({ cart: [] });
+
+
     async function updateCartItemCount() {
         try {
             const response = await fetch(`/api/getcart`, {
@@ -20,15 +23,15 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
             });
             const cartItems = await response.json();
             setCartItems(cartItems);
+            const cart = cartItems?.cart ?? [];
 
             // Wait until the DOM is fully loaded
 
-            console.log("inside script", cartItems);
-
             const cartItemCount = document.getElementById("cart_item_count");
             if (cartItemCount) {
-                cartItemCount.innerText = cartItems.cart.length;
-                console.log(cartItems.cart.length);
+
+                cartItemCount.innerText = cart.length;
+                console.log(cart.length);
             } else {
                 console.error('Element with id "cart_item_count" not found.');
             }
@@ -62,14 +65,26 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
         setProducts(updatedProducts);
     }
 
-    const fetchProduct = async () => {
-        const data = await fetchProductData();
-        setProducts(data);
+    async function fetchProduct() {
+        console.log("inside fetchProduct of productListing");
+
+        const response = await fetch(`/api/products`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const data = await response.json();
+
+        console.log("inside fetchProduct of productListing, products =", data);
+
+        setProducts(data.products);
     }
 
     useEffect(() => {
         fetchProduct();
         updateCartItemCount();
+
         console.log('Connecting to WebSocket:', serverUrl);
         const socket = io(serverUrl);
 
@@ -105,7 +120,6 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
     }, []);
 
     return (<>
-        hello
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-5">
             {products &&
                 products.map((product) => {
@@ -121,7 +135,7 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
                             updatedAt={product.updatedAt}
                             isAuthenticated={isAuthenticated}
                             updateCartItemCount={updateCartItemCount}
-                            isAddedToCart={cartItems.cart.some((item) => item.id === product.id)}
+                            isAddedToCart={cartItems.cart ? cartItems.cart.some((item) => item.id === product.id) : false}
                         />
                     )
                 })

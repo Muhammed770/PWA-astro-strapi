@@ -35,7 +35,9 @@ const CartItems = ({ serverUrl, isAuthenticated, clientUrl }: { clientUrl: strin
     }
 
     const [cartItems, setCartItems] = useState<ProductCardProps[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
     const FetchCartItems = async () => {
+        
         // Fetch cart data
         const response = await fetch(`${clientUrl}/api/getfullcart`, {
             method: "GET",
@@ -46,6 +48,7 @@ const CartItems = ({ serverUrl, isAuthenticated, clientUrl }: { clientUrl: strin
         const data = await response.json();
         const products = data ? data.cart : [];
         setCartItems(products);
+        setIsLoaded(true);
     }
     useEffect(() => {
         if (isAuthenticated) {
@@ -56,7 +59,7 @@ const CartItems = ({ serverUrl, isAuthenticated, clientUrl }: { clientUrl: strin
     }, [])
     return (
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-5">
-            {
+            {isLoaded ? cartItems.length >0 ?
                 cartItems.map((product: ProductCardProps) => (
                     <ProductCard
                         key={product.id}
@@ -68,7 +71,9 @@ const CartItems = ({ serverUrl, isAuthenticated, clientUrl }: { clientUrl: strin
                         FetchCartItems={FetchCartItems}
                         />
 
-                ))
+                )) :
+                <div className="text-center">No items in cart</div> :
+                <div className="text-center">loading ..</div>
            }
         </div>
     )

@@ -1,9 +1,16 @@
 ---
-import { fetchProductData } from "./api/products";
-import ProductCard from "../components/ProductCard.astro";
 import Layout from "../layouts/Layout.astro";
+import { PUBLIC_CLIENT_URL } from "astro:env/client";
 import ProductListing from "../components/ProductListing";
-const isAuthenticated = Astro.cookies.get("jwt_token")?.value;
+const jwtToken = Astro.cookies.get("jwt_token")?.value;
+const response = await fetch(`${PUBLIC_CLIENT_URL}/api/verify-user`, {
+	method: "GET",
+	headers: {
+		Authorization: `Bearer ${jwtToken}`,
+	},
+});
+const data = await response.json();
+const isAuthenticated = data.isVerified;
 console.log("isAuthenticated", isAuthenticated);
 
 const serverUrl = import.meta.env.PUBLIC_SERVER_URL;

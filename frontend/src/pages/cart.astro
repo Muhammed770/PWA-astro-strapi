@@ -1,15 +1,20 @@
 ---
-import { PUBLIC_CLIENT_URL } from "astro:env/client";
 import ProductCard from "../components/ProductCard";
 import Layout from "../layouts/Layout.astro";
 import CartItems from "../components/CartItems";
-
-// Get JWT token from cookies
-const jwt_token = Astro.cookies.get("jwt_token")?.value;
-console.log(jwt_token);
+import { PUBLIC_CLIENT_URL } from "astro:env/client";
+const jwtToken = Astro.cookies.get("jwt_token")?.value;
+const verificationRes = await fetch(`${PUBLIC_CLIENT_URL}/api/verify-user`, {
+    method: "GET",
+    headers: {
+        Authorization: `Bearer ${jwtToken}`,
+    },
+});
+const verData = await verificationRes.json();
+const isAuthenticated = verData.isVerified;
 
 // Redirect if no JWT token is found
-if (!jwt_token) {
+if (!isAuthenticated) {
     Astro.redirect("/auth/signin");
 }
 const serverUrl = import.meta.env.PUBLIC_SERVER_URL;
@@ -17,7 +22,7 @@ const serverUrl = import.meta.env.PUBLIC_SERVER_URL;
 const response = await fetch(`${PUBLIC_CLIENT_URL}/api/getfullcart`, {
     method: "GET",
     headers: {
-        Authorization: `Bearer ${jwt_token}`,
+        Authorization: `Bearer ${jwtToken}`,
     },
 });
 const data = await response.json();
@@ -41,7 +46,7 @@ console.log("cart page", products);
                 client:only="react"
                 serverUrl={serverUrl}
                 clientUrl={PUBLIC_CLIENT_URL}
-                isAuthenticated={jwt_token}
+                isAuthenticated={jwtToken}
             />
         </section>
 
