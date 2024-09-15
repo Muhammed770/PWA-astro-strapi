@@ -2,15 +2,14 @@
 import { PUBLIC_CLIENT_URL } from "astro:env/client";
 const jwtToken = Astro.cookies.get("jwt_token")?.value;
 const response = await fetch(`${PUBLIC_CLIENT_URL}/api/verify-user`, {
-	method: "GET",
-	headers: {
-		Authorization: `Bearer ${jwtToken}`,
-	},
+    method: "GET",
+    headers: {
+        Authorization: `Bearer ${jwtToken}`,
+    },
 });
 const data = await response.json();
 const isAuthenticated = data.isVerified;
 console.log("isAuthenticated", isAuthenticated);
-
 ---
 
 <header class="mb-2 px-4 shadow">
@@ -18,97 +17,106 @@ console.log("isAuthenticated", isAuthenticated);
         class="relative mx-auto flex max-w-screen-lg py-4 flex-row items-center justify-between"
     >
         <div class="m-4">
-    <a
-        href="/"
-        class="text-xl text-clip font-bold tracking-tight text-gray-900 sm:text-lg md:text-xl py-2"
-    >
-            Insta
-        </a>
-    <span
-        class="text-xl text-clip font-bold tracking-tight text-gray-900 sm:text-lg md:text-xl py-2"
-    >
-        <a
-            class="text-transparent text-clip bg-clip-text bg-gradient-to-tr to-orange-600 from-red-600"
-            href="/"
-        >
-            Shopee
-        </a>
-    </span>
-</div>
-        
+            <a
+                href="/"
+                class="text-xl text-clip font-bold tracking-tight text-gray-900 sm:text-lg md:text-xl py-2"
+            >
+                Insta
+            </a>
+            <span
+                class="text-xl text-clip font-bold tracking-tight text-gray-900 sm:text-lg md:text-xl py-2"
+            >
+                <a
+                    class="text-transparent text-clip bg-clip-text bg-gradient-to-tr to-orange-600 from-red-600"
+                    href="/"
+                >
+                    Shopee
+                </a>
+            </span>
+        </div>
 
         <nav
             aria-label="Header Navigation"
             class="peer-checked:block hidden pl-2 py-6 sm:block sm:py-0"
         >
-           
         </nav>
-         <ul class="flex flex-col gap-y-4 sm:flex-row sm:gap-x-8">
-                <li class="mt-2 sm:mt-0">
-                    {
-                        !isAuthenticated ? (
-                            <a
-                                class="rounded-xl border-2 border-gray-600 px-6 py-2 font-medium text-gray-600 hover:bg-gray-900 hover:text-white"
-                                href="/auth/signin"
+        <ul class="flex flex-col gap-y-4 sm:flex-row sm:gap-x-8">
+            <li class="mt-2 sm:mt-0">
+                {
+                    !isAuthenticated ? (
+                        <a
+                            class="rounded-xl border-2 border-gray-600 px-6 py-2 font-medium text-gray-600 hover:bg-gray-900 hover:text-white"
+                            href="/auth/signin"
+                        >
+                            Login
+                        </a>
+                    ) : (
+                        <div class="flex items-center select-none">
+                            <button
+                                class=" rounded-md border-2 border-gray-900 px-2 py-0 font-medium text-gray-600 hover:bg-gray-900 hover:text-white"
+                                onclick="fetch('/api/cookie').then(() => { window.location.href = '/auth/signin'; }).catch((err) => console.error('Sign out failed:', err));"
                             >
-                                Login
-                            </a>
-                        ) : (
-                            <div class="flex items-center select-none">
-                                <button
-                                    class=" rounded-md border-2 border-gray-900 px-2 py-0 font-medium text-gray-600 hover:bg-gray-900 hover:text-white"
-                                    onclick="fetch('/api/cookie').then(() => { window.location.href = '/auth/signin'; }).catch((err) => console.error('Sign out failed:', err));"
-                                >
-                                    Logout
-                                </button>
+                                Logout
+                            </button>
 
-                                <a
-                                    href="/cart"
-                                    class="w-10 h-10 p-2 relative flex items-center justify-center rounded-full ml-2"
+                            <a
+                                href="/cart"
+                                class="w-10 h-10 p-2 relative flex items-center justify-center rounded-full ml-2"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 576 512"
+                                    width="24"
+                                    height="24"
                                 >
-                                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
-                                    <span id="cart_item_count" class="text-xs font-semibold text-white bg-gray-900 rounded-full w-4 h-4 flex items-center justify-center absolute top-0 right-0">
-                                       0
-                                    </span>
-                                </a>
-                            </div>
-                        )
-                    }
-                </li>
-            </ul>
+                                    <path
+                                        fill="#000000"
+                                        d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+                                    />
+                                </svg>
+                                <span
+                                    id="cart_item_count"
+                                    class="text-xs font-semibold text-white bg-gray-900 rounded-full w-4 h-4 flex items-center justify-center absolute top-0 right-0"
+                                >
+                                    0
+                                </span>
+                            </a>
+                        </div>
+                    )
+                }
+            </li>
+        </ul>
     </div>
 </header>
 
 <script>
-   // Function to update cart item count
-  async function updateCartItemCount() {
-    try {
-      const response = await fetch(`/api/getcart`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const cartItems = await response.json();
+    // Function to update cart item count
+    async function updateCartItemCount() {
+        try {
+            const response = await fetch(`/api/getcart`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const cartItems = await response.json();
 
-      
-      // Wait until the DOM is fully loaded
+            // Wait until the DOM is fully loaded
 
-        console.log("inside script",cartItems);
-        
-        const cartItemCount = document.getElementById("cart_item_count");
-        if (cartItemCount) {
-          cartItemCount.innerText = cartItems.cart.length;
-          console.log(cartItems.cart.length);
-        } else {
-          console.error('Element with id "cart_item_count" not found.');
+            console.log("inside script", cartItems);
+
+            const cartItemCount = document.getElementById("cart_item_count");
+            if (cartItemCount) {
+                cartItemCount.innerText = cartItems.cart.length;
+                console.log(cartItems.cart.length);
+            } else {
+                console.error('Element with id "cart_item_count" not found.');
+            }
+        } catch (error) {
+            console.error("Error fetching cart items:", error);
         }
-      
-    } catch (error) {
-      console.error('Error fetching cart items:', error);
     }
-  }
 
-  // Call the function
-  updateCartItemCount();
+    // Call the function
+    updateCartItemCount();
 </script>
