@@ -2,10 +2,10 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { ProductCardProps } from '../helpers/types';
-import  ProductCard  from './ProductCard';
+import ProductCard from './ProductCard';
 import { fetchProductData } from "../pages/api/products";
 //serverUrl props from Astro
-const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isAuthenticated : string | undefined}) => {
+const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isAuthenticated: string | undefined }) => {
     const [products, setProducts] = useState<ProductCardProps[]>([]);
     console.log('PUBLIC_SERVER_URL:', serverUrl);
 
@@ -40,7 +40,7 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
 
     function handleProductCreate(data: ProductCardProps) {
         console.log('Product created:', data);
-        
+
         setProducts([...products, data]);
     }
 
@@ -52,7 +52,7 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
             return product;
         })
         console.log('Updated Products:', updatedProducts);
-        
+
         setProducts(updatedProducts);
     }
 
@@ -104,10 +104,11 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
         };
     }, []);
 
-    return (
+    return (<>
+        hello
         <div className="grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-5">
             {products &&
-                products.map((product)=> {
+                products.map((product) => {
                     return (
                         <ProductCard
                             key={product.id}
@@ -115,10 +116,10 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
                             title={product.title}
                             price={product.price}
                             photos={product.photos}
-                            pid = {product.pid}
-                            createdAt = {product.createdAt}
-                            updatedAt = {product.updatedAt}
-                            isAuthenticated = {isAuthenticated}
+                            pid={product.pid}
+                            createdAt={product.createdAt}
+                            updatedAt={product.updatedAt}
+                            isAuthenticated={isAuthenticated}
                             updateCartItemCount={updateCartItemCount}
                             isAddedToCart={cartItems.cart.some((item) => item.id === product.id)}
                         />
@@ -126,6 +127,7 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
                 })
             }
         </div>
+    </>
     )
 };
 
