@@ -12,7 +12,7 @@ const response = await fetch(`${PUBLIC_CLIENT_URL}/api/verify-user`, {
 const data = await response.json();
 const isAuthenticated = data.isVerified;
 console.log("isAuthenticated", isAuthenticated);
-
+const isProd = import.meta.env.PROD;
 const serverUrl = import.meta.env.PUBLIC_SERVER_URL;
 ---
 
@@ -32,6 +32,7 @@ const serverUrl = import.meta.env.PUBLIC_SERVER_URL;
 			client:only="react"
 			serverUrl={serverUrl}
 			isAuthenticated={isAuthenticated}
+			isProd={isProd}
 		/>
 	</main>
 </Layout>

@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import { ProductCardProps } from '../helpers/types';
 import ProductCard from './ProductCard';
 //serverUrl props from Astro
-const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isAuthenticated: string | undefined }) => {
+const ProductListing = ({ isProd, serverUrl, isAuthenticated }: { isProd:boolean,serverUrl: string, isAuthenticated: string | undefined }) => {
 
     console.log('PUBLIC_SERVER_URL:', serverUrl);
 
@@ -12,6 +12,7 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
     const [products, setProducts] = useState<ProductCardProps[]>([]);
     const [cartItems, setCartItems] = useState<{ cart: { id: number }[] }>({ cart: [] });
 
+    
 
     async function updateCartItemCount() {
         try {
@@ -129,7 +130,7 @@ const ProductListing = ({ serverUrl, isAuthenticated }: { serverUrl: string, isA
                             id={product.id}
                             title={product.title}
                             price={product.price}
-                            photos={product.photos}
+                            photos={isProd ?product.photos : `${serverUrl}${product.photos}`}
                             pid={product.pid}
                             createdAt={product.createdAt}
                             updatedAt={product.updatedAt}

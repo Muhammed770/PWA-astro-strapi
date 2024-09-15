@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ProductCardProps } from '../helpers/types';
 import ProductCard from './ProductCard';
 
-const CartItems = ({ serverUrl, isAuthenticated, clientUrl }: { clientUrl: string, serverUrl: string, isAuthenticated: string | undefined }) => {
+const CartItems = ({ isProd, serverUrl, isAuthenticated, clientUrl }: { isProd:boolean,clientUrl: string, serverUrl: string, isAuthenticated: string | undefined }) => {
     console.log('PUBLIC_SERVER_URL:', serverUrl);
 
 
@@ -63,12 +63,18 @@ const CartItems = ({ serverUrl, isAuthenticated, clientUrl }: { clientUrl: strin
                 cartItems.map((product: ProductCardProps) => (
                     <ProductCard
                         key={product.id}
-                        {...product}
+                        FetchCartItems={FetchCartItems}
+                        id={product.id}
+                        title={product.title}
+                        price={product.price}
+                        photos={isProd ? product.photos : `${serverUrl}${product.photos}`}
+                        pid={product.pid}
+                        createdAt={product.createdAt}
+                        updatedAt={product.updatedAt}
                         isCart={true}
                         isAuthenticated={isAuthenticated}
                         updateCartItemCount={updateCartItemCount}
                         isAddedToCart={true} 
-                        FetchCartItems={FetchCartItems}
                         />
 
                 )) :

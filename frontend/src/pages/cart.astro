@@ -12,6 +12,7 @@ const verificationRes = await fetch(`${PUBLIC_CLIENT_URL}/api/verify-user`, {
 });
 const verData = await verificationRes.json();
 const isAuthenticated = verData.isVerified;
+const isProd = import.meta.env.PROD;
 
 // Redirect if no JWT token is found
 if (!isAuthenticated) {
@@ -47,6 +48,7 @@ console.log("cart page", products);
                 serverUrl={serverUrl}
                 clientUrl={PUBLIC_CLIENT_URL}
                 isAuthenticated={jwtToken}
+                isProd={isProd}
             />
         </section>
 
