@@ -25,8 +25,28 @@ PWA-astro-strapi/<br>
 
 https://github.com/user-attachments/assets/de55d06b-8196-404a-9eb7-21adf0e3be46
 
+**credential for localhost strapi backend**
+1. **strapi localhost link:**
+```bash
+http://localhost:1337/admin/auth/login
+```
+2. **credentials:**
+```bash
+username: mail.muhammed2002@gmail.com
+password: Localhost@1
+```
 
+**credentials for strapi cloud**
+1. **strapi cloud deployed link:**
+```bash
+https://delicate-actor-440611e00f.strapiapp.com/admin/
+```
 
+2. **cloud credentials:**
+```bash
+username: mail.muhammed2002@gmail.com
+password: Strapi@1
+```
 
 
 1. **Navigate to the backend directory:**
