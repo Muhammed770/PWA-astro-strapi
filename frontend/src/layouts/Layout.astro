@@ -1,14 +1,12 @@
 ---
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
-import SocketComponent from "../components/SocketComponent.jsx";
 import { loadTSConfig } from "astro/dist/core/config";
 
 interface Props {
 	title: string;
 }
-const serverUrl = import.meta.env.PUBLIC_SERVER_URL;
-const { title } = Astro.props || "GRAND HOME INTERIOR CLOTHING";
+const { title } = Astro.props || "INSTA SHOPEE";
 ---
 
 <!doctype html>
@@ -24,12 +22,12 @@ const { title } = Astro.props || "GRAND HOME INTERIOR CLOTHING";
 	</head>
 	<body class="relative pb-10 min-w-full">
 		<Navbar />
-		<SocketComponent client:load serverUrl={serverUrl} />
 		<slot />
 		<!-- <Toast /> -->
 
 		<Footer />
 		<script is:inline src="/app.js"></script>
+		<!-- <script type="/module" src="/socket.js"></script> -->
 	</body>
 </html>
 <style is:global>

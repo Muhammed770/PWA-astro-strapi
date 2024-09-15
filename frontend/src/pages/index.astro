@@ -2,7 +2,11 @@
 import { fetchProductData } from "./api/products";
 import ProductCard from "../components/ProductCard.astro";
 import Layout from "../layouts/Layout.astro";
-let products = await fetchProductData();
+import ProductListing from "../components/ProductListing";
+const isAuthenticated = Astro.cookies.get("jwt_token")?.value;
+console.log("isAuthenticated", isAuthenticated);
+
+const serverUrl = import.meta.env.PUBLIC_SERVER_URL;
 ---
 
 <Layout title="Products List">
@@ -17,21 +21,11 @@ let products = await fetchProductData();
 				favorite products
 			</span>
 		</h1>
-		<section class="product-list">
-			{
-				products.data.map((product: any) => (
-					<ProductCard
-						id={product.id}
-						title={product.attributes.title}
-						price={product.attributes.price}
-						imageUrl={
-							product.attributes.photos.data[0]?.attributes
-								.formats.small?.url
-						}
-					/>
-				))
-			}
-		</section>
+		<ProductListing
+			client:only="react"
+			serverUrl={serverUrl}
+			isAuthenticated={isAuthenticated}
+		/>
 	</main>
 </Layout>
 

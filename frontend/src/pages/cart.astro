@@ -1,7 +1,8 @@
 ---
-import { PUBLIC_SERVER_URL, PUBLIC_CLIENT_URL } from "astro:env/client";
-import ProductCard from "../components/ProductCard.astro";
+import { PUBLIC_CLIENT_URL } from "astro:env/client";
+import ProductCard from "../components/ProductCard";
 import Layout from "../layouts/Layout.astro";
+import CartItems from "../components/CartItems";
 
 // Get JWT token from cookies
 const jwt_token = Astro.cookies.get("jwt_token")?.value;
@@ -11,7 +12,7 @@ console.log(jwt_token);
 if (!jwt_token) {
     Astro.redirect("/auth/signin");
 }
-
+const serverUrl = import.meta.env.PUBLIC_SERVER_URL;
 // Fetch cart data
 const response = await fetch(`${PUBLIC_CLIENT_URL}/api/getfullcart`, {
     method: "GET",
@@ -36,51 +37,26 @@ console.log("cart page", products);
             </span>
         </h1>
         <section class="product-list">
-            {
-                products && products.length > 0 ? (
-                    products.map((product: any) => {
-                        // Ensure product has expected structure
-                        const productData = product?.data;
-                        if (!productData) {
-                            return <div>Cart data is missing</div>;
-                        }
-                        return (
-                            <ProductCard
-                                key={productData.id}
-                                id={productData.id}
-                                title={
-                                    productData.attributes?.title || "No Title"
-                                }
-                                price={
-                                    productData.attributes?.price || "No Price"
-                                }
-                                imageUrl={
-                                    productData.attributes?.photos?.data[0]
-                                        ?.attributes?.formats?.small?.url ||
-                                    "/default-image.jpg"
-                                }
-                                isCart={true}
-                            />
-                        );
-                    })
-                ) : (
-                    <div>No products available</div>
-                )
-            }
+            <CartItems
+                client:only="react"
+                serverUrl={serverUrl}
+                clientUrl={PUBLIC_CLIENT_URL}
+                isAuthenticated={jwt_token}
+            />
         </section>
-    </main>
-</Layout>
 
-<style>
-    .product-page {
-        padding: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
+        <style>
+            .product-page {
+                padding: 20px;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
 
-    .product-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-    }
-</style>
+            .product-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+        </style>
+    </main></Layout
+>

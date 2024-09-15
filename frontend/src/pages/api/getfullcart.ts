@@ -21,12 +21,26 @@ export const GET: APIRoute = async ({ request }) => {
             const response = await fetch(`${PUBLIC_CLIENT_URL}/api/products/${id}`);
             const data = await response.json();
             return data;
-        }
-        ));
+        }));
+
+        const sanitizedData = alldetails.map((product: any) => {
+            const { data } = product;
+            const { id, attributes } = data;
+            const { title, price, pid, createdAt, updatedAt, photos } = attributes;
+            return {
+                id,
+                title,
+                price,
+                pid,
+                createdAt,
+                updatedAt,
+                photos: photos.data[0].attributes.formats.medium.url
+            };
+        });
 
         return Response.json({
             success: true,
-            cart: alldetails,
+            cart: sanitizedData,
         })
     } catch (error) {
         return new Response(JSON.stringify({ error: 'Failed to fetch cart' }), {

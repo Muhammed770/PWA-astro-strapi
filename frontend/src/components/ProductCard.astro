@@ -1,16 +1,8 @@
 ---
-
-
 // src/components/ProductCard.astro
-export interface ProductCardProps {
-    id: number;
-    title: string;
-    price: number;
-    imageUrl: string;
-    isCart?: boolean;
-}
+import { ProductCardProps } from "../helpers/types";
 
-const { id, title, price, imageUrl, isCart }: ProductCardProps =
+const { id, title, price, photos, isCart }: ProductCardProps =
     Astro.props as ProductCardProps;
 
 const isAuthenticated = Astro.cookies.get("jwt_token")?.value;
@@ -19,10 +11,10 @@ const isAuthenticated = Astro.cookies.get("jwt_token")?.value;
 <div
     class="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
 >
-    <div class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" >
+    <div class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
         <img
             class="object-cover object-center w-full h-full"
-            src={`${imageUrl}`}
+            src={`${photos}`}
             alt={title}
             onerror="this.onerror=null;this.src='/Default_product_img.png';"
         />
