@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import { ProductCardProps } from '../helpers/types';
 import ProductCard from './ProductCard';
 //serverUrl props from Astro
-const ProductListing = ({ isProd, serverUrl, isAuthenticated }: { isProd:boolean,serverUrl: string, isAuthenticated: string | undefined }) => {
+const ProductListing = ({ isProd, serverUrl, isAuthenticated }: { isProd: boolean, serverUrl: string, isAuthenticated: string | undefined }) => {
 
     console.log('PUBLIC_SERVER_URL:', serverUrl);
 
@@ -12,7 +12,7 @@ const ProductListing = ({ isProd, serverUrl, isAuthenticated }: { isProd:boolean
     const [products, setProducts] = useState<ProductCardProps[]>([]);
     const [cartItems, setCartItems] = useState<{ cart: { id: number }[] }>({ cart: [] });
 
-    
+
 
     async function updateCartItemCount() {
         try {
@@ -45,25 +45,37 @@ const ProductListing = ({ isProd, serverUrl, isAuthenticated }: { isProd:boolean
     function handleProductCreate(data: ProductCardProps) {
         console.log('Product created:', data);
 
-        setProducts([...products, data]);
+        setProducts((prevProducts)=>{
+            const updatedProducts = [...prevProducts, data];
+            console.log('Updated Products:', updatedProducts);
+            return updatedProducts;
+        });
     }
 
     function handleProductUpdate(data: ProductCardProps) {
-        const updatedProducts = products.map((product) => {
-            if (product.id === data.id) {
-                return data;
-            }
-            return product;
-        })
-        console.log('Updated Products:', updatedProducts);
+        console.log("handleProductUpdate data:", data);
+        setProducts((prevProducts)=>{
+            console.log("before update products:", products);
+    
+    
+            const updatedProducts = prevProducts.map((product) => {
+                if (product.id === data.id) {
+                    return data;
+                }
+                return product;
+            })
 
-        setProducts(updatedProducts);
+            return updatedProducts;
+        })
+       
     }
 
     function handleDeleteProduct(data: ProductCardProps) {
-        const updatedProducts = products.filter((product) => product.id !== data.id);
-        console.log('Deleted Products:', updatedProducts);
-        setProducts(updatedProducts);
+        setProducts((prevProducts)=>{
+            const updatedProducts = prevProducts.filter((product) => product.id !== data.id);
+            console.log('Deleted Products:', updatedProducts);
+            return updatedProducts;
+        });
     }
 
     async function fetchProduct() {
@@ -78,46 +90,50 @@ const ProductListing = ({ isProd, serverUrl, isAuthenticated }: { isProd:boolean
         const data = await response.json();
 
         console.log("inside fetchProduct of productListing, products =", data);
-
-        setProducts(data.products);
+        const products = data.products;
+        setProducts(products);
     }
 
     useEffect(() => {
-        fetchProduct();
-        updateCartItemCount();
+        const initialize = async () => {
 
-        console.log('Connecting to WebSocket:', serverUrl);
-        const socket = io(serverUrl);
+            await fetchProduct();
+            updateCartItemCount();
 
-        socket.on('connect', () => {
-            console.log('Connected to WebSocket');
-        });
+            console.log('Connecting to WebSocket:', serverUrl);
+            const socket = io(serverUrl);
 
-        socket.on('product:create', (data) => {
-            console.log('Product created:', data);
-            handleProductCreate(data);
-        });
+            socket.on('connect', () => {
+                console.log('Connected to WebSocket');
+            });
 
-        socket.on('product:update', (data) => {
-            console.log('Product updated:', data);
-            handleProductUpdate(data);
-        });
+            socket.on('product:create', (data) => {
+                console.log('Product created:', data);
+                handleProductCreate(data);
+            });
 
-        socket.on('product:delete', (data) => {
-            console.log('Product deleted:', data);
-            handleDeleteProduct(data);
-        });
+            socket.on('product:update', (data) => {
+                console.log('Product updated:', data);
+                handleProductUpdate(data);
+            });
 
-        socket.on('server:heartbeat', (data) => {
-            console.log('Heartbeat from server:', data);
-        });
+            socket.on('product:delete', (data) => {
+                console.log('Product deleted:', data);
+                handleDeleteProduct(data);
+            });
 
-        return () => {
-            console.log('Disconnecting WebSocket');
-            socket.disconnect(); // Clean up on unmount
-            console.log('Disconnected WebSocket');
+            socket.on('server:heartbeat', (data) => {
+                console.log('Heartbeat from server:', data);
+            });
 
-        };
+            return () => {
+                console.log('Disconnecting WebSocket');
+                socket.disconnect(); // Clean up on unmount
+                console.log('Disconnected WebSocket');
+
+            };
+        }
+        initialize();
     }, []);
 
     return (<>
@@ -130,7 +146,7 @@ const ProductListing = ({ isProd, serverUrl, isAuthenticated }: { isProd:boolean
                             id={product.id}
                             title={product.title}
                             price={product.price}
-                            photos={isProd ?product.photos : `${serverUrl}${product.photos}`}
+                            photos={isProd ? product.photos : `${serverUrl}${product.photos}`}
                             pid={product.pid}
                             createdAt={product.createdAt}
                             updatedAt={product.updatedAt}
