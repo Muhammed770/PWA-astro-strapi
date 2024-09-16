@@ -16,6 +16,18 @@ PWA-astro-strapi/<br>
 
 
 
+**credential for localhost strapi backend**
+1. **strapi localhost link:**
+```bash
+http://localhost:1337/admin/auth/login
+```
+2. **credentials:**
+```bash
+username: mail.muhammed2002@gmail.com
+password: Localhost@1
+```
+
+
 
 ## Getting Started
 
@@ -89,27 +101,4 @@ PUBLIC_CLIENT_URL="http://localhost:4321"
 - **Cart Management:** Add and remove products from your cart.
 
 
-
-**credential for localhost strapi backend**
-1. **strapi localhost link:**
-```bash
-http://localhost:1337/admin/auth/login
-```
-2. **credentials:**
-```bash
-username: mail.muhammed2002@gmail.com
-password: Localhost@1
-```
-
-**credentials for strapi cloud**
-1. **strapi cloud deployed link:**
-```bash
-https://delicate-actor-440611e00f.strapiapp.com/admin/
-```
-
-2. **cloud credentials:**
-```bash
-username: mail.muhammed2002@gmail.com
-password: Strapi@1
-```
 
