@@ -55,7 +55,7 @@ const ProductListing = ({ isProd, serverUrl, isAuthenticated }: { isProd: boolea
     function handleProductUpdate(data: ProductCardProps) {
         console.log("handleProductUpdate data:", data);
         setProducts((prevProducts)=>{
-            console.log("before update products:", products);
+            console.log("before update products:", prevProducts);
     
     
             const updatedProducts = prevProducts.map((product) => {

@@ -17,6 +17,12 @@ module.exports = {
   bootstrap({ strapi }) {
     let { Server } = require("socket.io");
     function sanitizeProduct(product) {
+      console.log("before sanitizeProduct", product);
+      // Extract the formats
+      const url = product.photos[0].url;
+      console.log("formats", url);
+      
+      
       return {
         id: product.id,
         title: product.title,
@@ -24,7 +30,7 @@ module.exports = {
         pid: product.pid,
         createdAt: product.createdAt,
         updatedAt: product.updatedAt,
-        photos: product.photos[0].formats.medium.url
+        photos: url
       }
     }
     let io = new Server(strapi.server.httpServer, {
@@ -66,8 +72,8 @@ module.exports = {
           
           if (model.collectionName === 'products') {
             const { result } = event;
-            const sanitizedResult = sanitizeProduct(result);
-            socket.emit('product:delete', sanitizedResult); // Emit event to clients
+            // const sanitizedResult = sanitizeProduct(result);
+            socket.emit('product:delete', result); // Emit event to clients
           }
         }
       });

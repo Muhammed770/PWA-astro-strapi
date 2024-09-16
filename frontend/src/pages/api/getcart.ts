@@ -7,7 +7,11 @@ export const GET: APIRoute = async ({ request }) => {
     const cookies = request.headers.get('cookie');    
     const cookieMap = parseCookies(cookies);
     const jwtToken = cookieMap.jwt_token;
-    
+    if(!jwtToken) {
+        return new Response(JSON.stringify({ error: 'Failed to fetch cart' }), {
+            status: 500,
+        });
+    }
     try {
         const response = await fetch(`${PUBLIC_SERVER_URL}/api/users/me?populate=cart`, {
             headers: {
