@@ -6,11 +6,6 @@
 https://delicate-actor-440611e00f.strapiapp.com/admin/
 ```
 
-2. **cloud credentials:**
-```bash
-username: mail.muhammed2002@gmail.com
-password: Strapi@1
-```
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
 

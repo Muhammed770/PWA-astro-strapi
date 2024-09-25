@@ -25,11 +25,6 @@ PWA-astro-strapi/<br>
 ```bash
 http://localhost:1337/admin/auth/login
 ```
-2. **credentials:**
-```bash
-username: mail.muhammed2002@gmail.com
-password: Localhost@1
-```
 
 
 
