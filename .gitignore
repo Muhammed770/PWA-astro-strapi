@@ -1,1 +1,4 @@
 frontend/.vercel/output/functions/_render.func/.vercel/output/_functions/chunks/AuthForm_BoQg80_N.mjs
+.env
+backend/.env
+
